@@ -1,0 +1,13 @@
+{
+  "name": "gamma40-therapy",
+  "version": "1.0.0",
+  "description": "40Hz Gamma Neural Therapy — MIT GENUS Protocol",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "dev": "npx live-server --port=3000 .",
+    "deploy:netlify": "netlify deploy --dir . --prod",
+    "deploy:vercel": "vercel --prod"
+  },
+  "keywords": ["gamma", "therapy", "40hz", "alzheimer", "brain", "wellness"],
+  "license": "MIT"
+}
