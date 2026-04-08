@@ -562,9 +562,141 @@ input[type=range]:focus-visible { outline: 2px solid var(--color-primary); outli
   border: 1px solid color-mix(in oklch, var(--color-gold) 25%, transparent);
   margin-left: var(--space-2); vertical-align: middle;
 }
+
+/* ---- Waiver Modal ---- */
+.waiver-backdrop {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.85);
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-4);
+  backdrop-filter: blur(6px);
+}
+.waiver-modal {
+  background: var(--color-surface-2); border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl); max-width: 560px; width: 100%;
+  max-height: 90dvh; overflow-y: auto;
+  padding: var(--space-8) var(--space-6);
+  box-shadow: var(--shadow-lg);
+}
+.waiver-modal h2 {
+  font-family: var(--font-display); font-size: var(--text-lg);
+  color: var(--color-error); margin-bottom: var(--space-4);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.waiver-modal h3 {
+  font-size: var(--text-sm); font-weight: 700; color: var(--color-text);
+  margin-top: var(--space-4); margin-bottom: var(--space-2);
+}
+.waiver-modal p, .waiver-modal li {
+  font-size: var(--text-sm); line-height: 1.65; color: var(--color-text-muted);
+}
+.waiver-modal ul {
+  list-style: none; padding-left: 0;
+}
+.waiver-modal ul li::before {
+  content: '\2716\0020'; color: var(--color-error); font-weight: 700;
+}
+.waiver-modal ul li {
+  padding: var(--space-1) 0;
+}
+.waiver-check-row {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  margin-top: var(--space-6); padding: var(--space-4);
+  background: var(--color-surface-offset); border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+.waiver-check-row input[type="checkbox"] {
+  width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;
+  accent-color: var(--color-primary);
+}
+.waiver-check-row label {
+  font-size: var(--text-xs); line-height: 1.6; color: var(--color-text);
+  cursor: pointer; user-select: none;
+}
+.waiver-accept {
+  display: block; width: 100%; margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-sm); font-weight: 700;
+  color: var(--color-text-inverse); background: var(--color-primary);
+  border: none; border-radius: var(--radius-md);
+  cursor: pointer; transition: all var(--transition);
+}
+.waiver-accept:disabled {
+  opacity: 0.35; cursor: not-allowed;
+}
+.waiver-accept:not(:disabled):hover {
+  background: var(--color-primary-hover);
+}
+.waiver-decline {
+  display: block; width: 100%; margin-top: var(--space-2);
+  padding: var(--space-2); font-size: var(--text-xs);
+  color: var(--color-text-muted); background: none;
+  border: none; cursor: pointer; text-align: center;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.waiver-decline:hover { color: var(--color-error); }
+.waiver-emergency {
+  margin-top: var(--space-5); padding: var(--space-3) var(--space-4);
+  background: color-mix(in oklch, var(--color-error) 8%, transparent);
+  border: 1px solid color-mix(in oklch, var(--color-error) 25%, transparent);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.65;
+}
+.waiver-emergency strong { color: var(--color-error); }
+
+/* ---- Emergency Banner (visible during session) ---- */
+.emergency-banner {
+  background: color-mix(in oklch, var(--color-error) 10%, var(--color-surface));
+  border: 1px solid color-mix(in oklch, var(--color-error) 30%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-xs); line-height: 1.6;
+  color: var(--color-text-muted);
+  display: flex; align-items: flex-start; gap: var(--space-2);
+}
+.emergency-banner .em-icon {
+  font-size: 1.1rem; flex-shrink: 0; line-height: 1;
+}
+.emergency-banner strong { color: var(--color-error); font-weight: 700; }
+.emergency-banner a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 2px; }
 </style>
 </head>
 <body>
+
+<!-- ===== SAFETY WAIVER MODAL ===== -->
+<div class="waiver-backdrop" id="waiverBackdrop">
+  <div class="waiver-modal" role="dialog" aria-modal="true" aria-labelledby="waiverTitle">
+    <h2 id="waiverTitle">⚠️ Photosensitivity &amp; Seizure Risk</h2>
+
+    <p>This application generates <strong>40 Hz visual flicker</strong> and <strong>pulsing auditory tones</strong> that may trigger seizures or other adverse reactions in people with photosensitive epilepsy, undiagnosed photosensitivity, migraines, or certain neurological conditions.</p>
+
+    <p>Although 40 Hz is generally outside the most common trigger range (5–30 Hz), <strong>no flashing light stimulation is 100% safe for everyone</strong>. Individual sensitivity varies.</p>
+
+    <h3>Do NOT use this application if you:</h3>
+    <ul>
+      <li>Have ever had a seizure or been diagnosed with epilepsy or photosensitive epilepsy</li>
+      <li>Have a family history of seizures or photosensitive epilepsy</li>
+      <li>Experience discomfort, headaches, or visual issues from flashing lights or patterns</li>
+      <li>Have any neurological condition or migraines</li>
+    </ul>
+
+    <h3>Before using:</h3>
+    <p>Consult your physician. This application is for <strong>entertainment and educational purposes only</strong>. It is not a medical treatment or device and has not been evaluated by the FDA.</p>
+
+    <div class="waiver-check-row">
+      <input type="checkbox" id="waiverCheck">
+      <label for="waiverCheck">I have read and understand the seizure warning. I confirm I do not have epilepsy, photosensitivity, or any condition that could be triggered by flashing lights or pulsing sounds. I voluntarily assume all risks associated with using this application.</label>
+    </div>
+
+    <button class="waiver-accept" id="waiverAccept" disabled>I Accept — Continue to GAMMA40</button>
+    <button class="waiver-decline" id="waiverDecline">I do not accept — Leave this page</button>
+
+    <div class="waiver-emergency">
+      <strong>🚨 Emergency:</strong> If you or someone near you experiences a seizure, convulsions, loss of consciousness, disorientation, or involuntary movements — <strong>stop the application immediately</strong>, call emergency services (<strong>911</strong> in the US), and move the person to a safe position on their side. Do not restrain them or place anything in their mouth.
+    </div>
+  </div>
+</div>
 
 <!-- Light flash overlay for visual stimulation -->
 <div class="light-overlay" id="lightOverlay"></div>
@@ -832,9 +964,18 @@ input[type=range]:focus-visible { outline: 2px solid var(--color-primary); outli
     </div>
   </div>
 
+  <!-- EMERGENCY NOTICE (always visible) -->
+  <div class="emergency-banner">
+    <span class="em-icon">🚨</span>
+    <div>
+      <strong>If you feel dizzy, nauseous, or experience any discomfort — stop immediately.</strong><br>
+      If you or someone nearby has a seizure or loses consciousness, call <strong>911</strong> (US) or your local emergency number. Move the person onto their side and do not restrain them.
+    </div>
+  </div>
+
   <!-- DISCLAIMER -->
   <div class="disclaimer">
-    <strong>⚠ Medical Disclaimer:</strong> This app is for educational and wellness exploration purposes only. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. The 40Hz therapy research is ongoing. Consult a healthcare professional before use, especially if you have epilepsy, photosensitive conditions, or any neurological disorder. Do not use visual flicker mode if you are photosensitive.
+    <strong>⚠ Medical Disclaimer:</strong> This application is provided strictly for <strong>entertainment and educational purposes only</strong>. It is not a medical device, therapy, or treatment. It is not intended to diagnose, treat, cure, or prevent any disease and has not been evaluated or approved by the FDA. The 40Hz GENUS research is ongoing — results observed in controlled laboratory settings may not apply to this implementation or to humans in general. Consult a healthcare professional before use, especially if you have epilepsy, photosensitive conditions, or any neurological disorder. <strong>Do not use visual flicker mode if you are photosensitive.</strong>
   </div>
 
 </main>
@@ -1435,6 +1576,35 @@ document.getElementById('mitResetBtn')?.addEventListener('click', () => {
   updateDisplay();
   setRingProgress(1);
   sessionStatus.textContent = 'Ready';
+});
+
+// ---- Waiver Gate ----
+const waiverBackdrop = document.getElementById('waiverBackdrop');
+const waiverCheck = document.getElementById('waiverCheck');
+const waiverAcceptBtn = document.getElementById('waiverAccept');
+const waiverDeclineBtn = document.getElementById('waiverDecline');
+
+// Check if already accepted this browser session
+if (sessionStorage.getItem('gamma40_waiver') === 'accepted') {
+  waiverBackdrop.style.display = 'none';
+} else {
+  // Block interaction until accepted
+  waiverBackdrop.style.display = 'flex';
+}
+
+waiverCheck.addEventListener('change', () => {
+  waiverAcceptBtn.disabled = !waiverCheck.checked;
+});
+
+waiverAcceptBtn.addEventListener('click', () => {
+  if (!waiverCheck.checked) return;
+  sessionStorage.setItem('gamma40_waiver', 'accepted');
+  waiverBackdrop.style.display = 'none';
+});
+
+waiverDeclineBtn.addEventListener('click', () => {
+  // Navigate away — user declined
+  window.location.href = 'about:blank';
 });
 
 // ---- Init ----
